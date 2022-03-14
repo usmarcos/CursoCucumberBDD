@@ -1,9 +1,8 @@
-import cucumber.api.PendingException;
-import cucumber.api.Transform;
+package br.bdd.steps;
+
 import cucumber.api.java.pt.Quando;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
-import cucumber.deps.com.thoughtworks.xstream.converters.basic.DateConverter;
 import org.junit.Assert;
 
 import java.text.DateFormat;
@@ -11,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AprenderCucumber {
+public class AprenderCucumberSteps {
     @Dado ("^que criei o arquivo corretamente$")
     public void queCrieiOArquivoCorretamente() {
 

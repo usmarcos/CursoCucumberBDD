@@ -1,3 +1,4 @@
+package br.bdd.runners;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.SnippetType;
@@ -6,7 +7,8 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "D:\\OneDrive\\Estudo\\CursoCucumberBDD\\src\\test\\resources", //mapeia as features
+        features = "src/test/resources/features/aprender_cucumber.feature", //mapeia as features
+        glue = "br.bdd.steps", //mapeia as steps
         plugin = "pretty", //mostra as descrições na hora de executar o junit
         monochrome = false, //cor nas descrições
         snippets = SnippetType.CAMELCASE,
