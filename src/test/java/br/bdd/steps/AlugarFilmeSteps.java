@@ -5,6 +5,8 @@ import br.bdd.entidades.NotaAluguel;
 import br.bdd.entidades.TipoAluguel;
 import br.bdd.servicos.AluguelService;
 import br.bdd.utils.DateUtils;
+import cucumber.api.DataTable;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -13,6 +15,7 @@ import org.junit.Assert;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 public class AlugarFilmeSteps {
 
@@ -22,7 +25,9 @@ public class AlugarFilmeSteps {
     private NotaAluguel nota;
     private String erro;
     //por padrão quando não for enviado o tipo o valor ficará setado para comum
-    private TipoAluguel tipoAluguel = TipoAluguel.COMUM;
+    //foi passado para a classe map então não será necessário inicialização
+    //private TipoAluguel tipoAluguel = TipoAluguel.COMUM;
+    private TipoAluguel tipoAluguel;
 
     @Dado("^um filme com estoque de (\\d+) unidades$")
     public void umFilmeComEstoqueDeUnidades(int arg1) {
@@ -33,6 +38,18 @@ public class AlugarFilmeSteps {
     @Dado("^que o preço do aluguel seja R\\$ (\\d+)$")
     public void queOPreçoDoAluguelSejaR$(int arg1) {
         filme.setAluguel(arg1);
+    }
+
+    @Dado("^um filme$")
+    public void umFilme(DataTable table) {
+        Map<String, String> map = table.asMap(String.class, String.class);
+        filme = new Filme();
+        //após mapeado ele passa o valor que foi mapeado
+        filme.setEstoque(Integer.parseInt(map.get("estoque")));
+        filme.setAluguel(Integer.parseInt(map.get("preco")));
+        String tipo = map.get("tipo");
+        tipoAluguel = tipo.equals("semanal") ? TipoAluguel.SEMANAL :
+                tipo.equals("extendido") ? TipoAluguel.EXTENDIDO : TipoAluguel.COMUM;
     }
 
     @Quando("^alugar$")
