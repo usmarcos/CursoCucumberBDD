@@ -3,6 +3,7 @@ package br.bdd.steps;
 import br.bdd.entidades.Filme;
 import br.bdd.entidades.NotaAluguel;
 import br.bdd.servicos.AluguelService;
+import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
@@ -17,6 +18,7 @@ public class AlugarFilmeSteps {
     private Filme filme;
     private AluguelService aluguel = new AluguelService();
     private NotaAluguel nota;
+    private String erro;
 
     @Dado("^um filme com estoque de (\\d+) unidades$")
     public void umFilmeComEstoqueDeUnidades(int arg1) {
@@ -31,7 +33,12 @@ public class AlugarFilmeSteps {
 
     @Quando("^alugar$")
     public void alugar() {
-    nota = aluguel.alugar(filme);
+        try {
+            nota = aluguel.alugar(filme);
+        } catch (RuntimeException e) {
+            erro = e.getMessage();
+        }
+
     }
 
     @Então("^o preço do aluguel será R\\$ (\\d+)$")
@@ -42,7 +49,7 @@ public class AlugarFilmeSteps {
     @Então("^a data de entrega será no dia seguinte$")
     public void aDataDeEntregaSeráNoDiaSeguinte() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DAY_OF_MONTH,1);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
 
         //setando a data de retorno dentro da instância do calendar
         Date dataRetorno = nota.getDataEntrega();
@@ -56,6 +63,12 @@ public class AlugarFilmeSteps {
 
     @Então("^o estoque do filme será (\\d+) unidade$")
     public void oEstoqueDoFilmeSeráUnidade(int arg1) {
-    Assert.assertEquals(arg1, filme.getEstoque());
+        Assert.assertEquals(arg1, filme.getEstoque());
     }
+
+    @Então("^não será possível por falta de estoque$")
+    public void nãoSeráPossívelPorFaltaDeEstoque() {
+       Assert.assertEquals("Filme sem estoque", erro);
+    }
+
 }
