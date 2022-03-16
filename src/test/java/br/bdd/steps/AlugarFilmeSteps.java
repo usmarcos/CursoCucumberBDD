@@ -2,6 +2,7 @@ package br.bdd.steps;
 
 import br.bdd.entidades.Filme;
 import br.bdd.entidades.NotaAluguel;
+import br.bdd.entidades.TipoAluguel;
 import br.bdd.servicos.AluguelService;
 import br.bdd.utils.DateUtils;
 import cucumber.api.PendingException;
@@ -22,7 +23,8 @@ public class AlugarFilmeSteps {
     private AluguelService aluguel = new AluguelService();
     private NotaAluguel nota;
     private String erro;
-    private String tipoAluguel;
+    //por padrão quando não for enviado o tipo o valor ficará setado para comum
+    private TipoAluguel tipoAluguel = TipoAluguel.COMUM;
 
     @Dado("^um filme com estoque de (\\d+) unidades$")
     public void umFilmeComEstoqueDeUnidades(int arg1) {
@@ -69,17 +71,19 @@ public class AlugarFilmeSteps {
     public void oEstoqueDoFilmeSeráUnidade(int arg1) {
         Assert.assertEquals(arg1, filme.getEstoque());
     }
+
     //cenário de filme sem estoque
     @Então("^não será possível por falta de estoque$")
     public void nãoSeráPossívelPorFaltaDeEstoque() {
         Assert.assertEquals("Filme sem estoque", erro);
     }
 
-    //cenário extendido
-
     @Dado("^que o tipo do aluguel seja (.*)$")
-    public void queOTipoDoAluguelSejaExtendido(String tipo) {
-        tipoAluguel = tipo;
+    public void queOTipoDoAluguelSeja(String tipo) {
+        //tipoAluguel = tipo;
+        //utilizando agora o enum tipo
+        tipoAluguel = tipo.equals("semanal") ? TipoAluguel.SEMANAL :
+                tipo.equals("extendido") ? TipoAluguel.EXTENDIDO : TipoAluguel.COMUM;
     }
 
     @Então("^a data entrega será em (\\d+) dias?$")
