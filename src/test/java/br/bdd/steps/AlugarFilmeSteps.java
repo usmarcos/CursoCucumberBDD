@@ -6,7 +6,6 @@ import br.bdd.entidades.TipoAluguel;
 import br.bdd.servicos.AluguelService;
 import br.bdd.utils.DateUtils;
 import cucumber.api.DataTable;
-import cucumber.api.PendingException;
 import cucumber.api.java.pt.Dado;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
